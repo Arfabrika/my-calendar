@@ -1,40 +1,14 @@
-async function createTask(userName, userAge) {
-  
-    const response = await fetch("/api/tasks", {
-        method: "POST",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
-        body: JSON.stringify({
-            name: userName,
-            deadline: userAge
-        })
-    });
-    if (response.ok === true) {
-        const user = await response.json();
-        document.getElementById("tmp").innerHTML = user.mes;
-    }
-    else {
-        const error = await response.json();
-        console.log(error.message);
-    }
-}
-
-document.getElementById("submit").addEventListener("click", async () => {
-     
-     const name = document.getElementById("name").value;
-     const deadline = document.getElementById("deadline").value;
-     await createTask(name, deadline);
-
- });
-
- window.onload = function() {
+window.onload = function() {
     document.getElementById("tasktbl").style.visibility = "hidden"
+    document.getElementById("editModule").style.display = "none"
+    //document.getElementById("tasktbl").style.visibility = "hidden"
  }
 
  document.getElementById("getTasks").addEventListener("click", async () => {
-    await getAllTasks();
+    await loadTasksFromTXT();
 });
 
- async function getAllTasks() {
+ async function loadTasksFromTXT() {
     const response = await fetch("/api/tasks", {
         method: "GET",
         headers: { "Accept": "application/json", "Content-Type": "application/json" }
