@@ -20,7 +20,7 @@ def loadTasksFromTXT(taskFileName: str):
     tasks = []
     for line in lines:
         taskData = line.split()
-        curTask = Task({"name": taskData[0], "deadline": taskData[1]})
+        curTask = Task({"id": taskData[0], "name": taskData[1], "deadline": taskData[2]})
         tasks.append(curTask)
     f.close()
     return tasks
