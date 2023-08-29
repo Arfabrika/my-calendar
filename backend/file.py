@@ -5,7 +5,7 @@ def saveTasks(tasks: [], taskFileName: str):
     try:
         f = io.open(taskFileName, "w")
         for task in tasks:
-            taskAsArr = [value for value in task.__dict__.values()]
+            taskAsArr = [str(value) for value in task.__dict__.values()]
             f.write(" ".join(taskAsArr) + "\n")
         f.close()
     except Exception as e:

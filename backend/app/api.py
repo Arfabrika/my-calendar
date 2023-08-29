@@ -46,7 +46,8 @@ def getTasks():
 
 @app.post("/api/tasks")
 def addTask(data = Body()):
-    if (taskStore.addTask(Task(data))):
+    print(data['task'])
+    if (taskStore.addTask(Task(data['task']))):
         return {"mes": "OK"}
     return {"mes": "ERROR"}
 
