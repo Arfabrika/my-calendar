@@ -28,26 +28,24 @@ class TaskStore:
             if task.name == name:
                 res.append(i)
         return res
-
-    def editTasksByName(self, name, newTask):
-        tasks = self.findTasksByName(name)
-        if len(tasks) == 0:
-            return -1
-        for ind in tasks:
-            self.tasks[ind].name = newTask['name']
-            self.tasks[ind].deadline = newTask['deadline']
-        return 1
+    
+    def editTasksById(self, id, newTask):
+        for task in self.tasks:
+            if task.id == id:
+                task.name = newTask['name']
+                task.deadline = newTask['deadline']
+                return 1
+        return -1
 
     def getTasks(self):
         return self.tasks
-
-    def deleteTasksByName(self, name):
-        tasks = self.findTasksByName(name)
-        if len(tasks) == 0:
-            return -1
-        for ind in sorted(tasks, reverse=True):
-            del self.tasks[ind]
-        return 1
+    
+    def deleteTasksById(self, id):
+        for task in self.tasks:
+            if task.id == id:
+                self.tasks.remove(task)
+                return 1
+        return -1
 
     def __del__(self):
         self.saveTasks()

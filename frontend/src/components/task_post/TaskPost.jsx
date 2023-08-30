@@ -2,19 +2,22 @@ import React, {useState} from 'react';
 import TaskContent from "../task_content/TaskContent";
 import Btn from "../btn/Btn";
 import classes from "./TaskPost.module.css";
-
-async function editTask() {
-    //console.log(props)
-}
+import TaskFields from "../TaskFields/TaskFields";
 
 const TaskPost = (props) => {
+    const [visible, setVisible] = useState(false)
+
     return (
         <div className={classes.TaskPost}>
             <TaskContent task={props.task}></TaskContent>
             <div className={classes.Btns}>
-                <Btn>Изменить</Btn>
-                <Btn>Удалить</Btn>
+                <Btn onClick={() => setVisible(true)}>Изменить</Btn>
+                <Btn onClick={() => props.delete(props.task)}>Удалить</Btn>
             </div>
+            {visible && <TaskFields
+                isEdit={true}
+                hideFld={() => setVisible(false)}
+                edit={(task) => props.edit(task, props.task.id)}></TaskFields>}
         </div>
     );
 };

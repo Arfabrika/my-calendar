@@ -1,5 +1,6 @@
 from fastapi import *
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from taskStore import TaskStore
 from task import Task
 
@@ -19,25 +20,10 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-
-@app.get("/", tags=["root"])
-async def read_root() -> dict:
-    return {"message": "Welcome to your todo list."}
-
-#app.mount('/static', StaticFiles(directory='public', html=True), name='static')
-
-taskStore = None
-
-# @app.get("/tasks")
-# def showMain():
-   
-#     return FileResponse("./public/tasks/newTask.html")
+taskStore = TaskStore()
 
 @app.get("/api/tasks")
 def getTasks():
-    global taskStore
-    if taskStore is None:
-        taskStore = TaskStore()
     arr = taskStore.getTasks()
     jsonarr = []
     for task in arr:
@@ -46,21 +32,21 @@ def getTasks():
 
 @app.post("/api/tasks")
 def addTask(data = Body()):
-    print(data['task'])
+    print(data)
     if (taskStore.addTask(Task(data['task']))):
-        return {"mes": "OK"}
-    return {"mes": "ERROR"}
+        return {"message": "OK"}
+    return JSONResponse(content={"message": "Ошибка при добавлении задачи"}, status_code=400)
 
 @app.put("/api/tasks")
 def editTask(data = Body()):
-    response = taskStore.editTasksByName(data['oldName'], data['newTask'])
+    response = taskStore.editTasksById(int(data['id']), data['task'])
     if response == 1:
-        return {"mes": "Ok"}
-    return {"mes": "Не найдено задач с указанным названием"}
+        return {"message": "Ok"}
+    return JSONResponse(content={"message": "Указанная задача не найдена"}, status_code=404)
 
-@app.delete("/api/tasks/{name}")
-def deleteTask(name):
-    response = taskStore.deleteTasksByName(name)
+@app.delete("/api/tasks/{id}")
+def deleteTask(id):
+    response = taskStore.deleteTasksById(int(id))
     if response == 1:
-        return {"mes": "Ok"}
-    return {"mes": "Не найдено задач с указанным названием"}
+        return {"message": "Ok"}
+    return JSONResponse(content={"message": "Указанная задача не найдена"}, status_code=404)
