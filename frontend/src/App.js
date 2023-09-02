@@ -40,7 +40,7 @@ function App() {
         })
             .then(()=>{
                 setTasks([...tasks, newTask])
-                setError('')
+                openAddTask()
             })
             .catch((e) => {
                 setErrorComm(e)

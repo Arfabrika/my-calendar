@@ -32,7 +32,6 @@ def getTasks():
 
 @app.post("/api/tasks")
 def addTask(data = Body()):
-    print(data)
     if (taskStore.addTask(Task(data['task']))):
         return {"message": "OK"}
     return JSONResponse(content={"message": "Ошибка при добавлении задачи"}, status_code=400)

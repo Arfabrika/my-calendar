@@ -17,7 +17,8 @@ const TaskPost = (props) => {
             {visible && <TaskFields
                 isEdit={true}
                 hideFld={() => setVisible(false)}
-                edit={(task) => props.edit(task, props.task.id)}></TaskFields>}
+                edit={(task) => props.edit(task, props.task.id)}
+                task={props.task}></TaskFields>}
         </div>
     );
 };
